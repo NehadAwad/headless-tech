@@ -1,0 +1,12 @@
+{
+    "igonre": [
+        ".git",
+        "node_modules/",
+        "dist/",
+        "coverage/"
+    ],
+    "watch": [
+        "src/*"
+    ],
+    "ext": "js,json.ts"
+}
