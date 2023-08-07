@@ -6,11 +6,10 @@ import { User, IUser } from '../models/User';
 const secretKey = 'your_secret_key_here';
 
 export const signUp = async (req: Request, res: Response): Promise<any> => {
-  const { username, email, password } = req.body;
-    console.log(username)
+  const { email, password } = req.body;
   try {
     // Check if the username or email already exists
-    const existingUser = await User.findOne({ $or: [{ username }, { email }] });
+    const existingUser = await User.findOne({ email });
     if (existingUser) {
       return res.status(409).json({ message: 'Username or email already exists' });
     }
@@ -20,7 +19,6 @@ export const signUp = async (req: Request, res: Response): Promise<any> => {
 
     // Create a new user document
     const newUser: IUser = new User({
-      username,
       email,
       password: hashedPassword,
     });
@@ -30,7 +28,7 @@ export const signUp = async (req: Request, res: Response): Promise<any> => {
     // Generate a JWT token
     const token = jwt.sign({ userId: newUser._id }, secretKey, { expiresIn: '1h' });
 
-    res.status(201).json({ message: 'User created', token });
+    res.status(201).json({ email, token });
   } catch (error) {
     res.status(500).json({ message: 'Something went wrong' });
   }
@@ -55,7 +53,7 @@ export const signIn = async (req: Request, res: Response): Promise<any> => {
       // Generate a JWT token
       const token = jwt.sign({ userId: user._id }, secretKey, { expiresIn: '3h' });
   
-      res.status(200).json({ message: 'Login successful', token });
+      res.status(200).json({ email, token });
     } catch (error) {
       res.status(500).json({ message: 'Something went wrong' });
     }
