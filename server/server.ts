@@ -18,6 +18,11 @@ const start = async () => {
         app.use(cookieParser());
         app.use(cors({ credentials: true, origin: ["http://localhost:5173"] }));
 
+        app.use((req, res, next)=>{
+            console.log(req.path, req.method);
+            next();
+        });
+
         // Routes
         routes(app);
 

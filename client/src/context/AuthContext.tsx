@@ -1,7 +1,6 @@
 import React, { createContext, useReducer, useEffect, ReactNode } from 'react';
 
 interface User {
-  username?: string;
   email: string;
   password: string;
 }

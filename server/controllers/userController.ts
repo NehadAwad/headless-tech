@@ -8,10 +8,10 @@ const secretKey = 'your_secret_key_here';
 export const signUp = async (req: Request, res: Response): Promise<any> => {
   const { email, password } = req.body;
   try {
-    // Check if the username or email already exists
+    // Check if the email already exists
     const existingUser = await User.findOne({ email });
     if (existingUser) {
-      return res.status(409).json({ message: 'Username or email already exists' });
+      return res.status(409).json({ message: 'Eemail already exists' });
     }
 
     // Hash the password before saving to the database
@@ -26,10 +26,11 @@ export const signUp = async (req: Request, res: Response): Promise<any> => {
     await newUser.save();
 
     // Generate a JWT token
-    const token = jwt.sign({ userId: newUser._id }, secretKey, { expiresIn: '1h' });
+    const token = jwt.sign({ userId: newUser._id }, secretKey, { expiresIn: '3h' });
 
     res.status(201).json({ email, token });
   } catch (error) {
+    console.log(error)
     res.status(500).json({ message: 'Something went wrong' });
   }
 };

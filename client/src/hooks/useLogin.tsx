@@ -1,23 +1,23 @@
 import { useState } from 'react';
 import { useAuthContext } from './useAuthContext';
 
-interface SignupResult {
-  signup: (email: string, password: string) => Promise<void>;
+interface LoginResult {
+  login: (email: string, password: string) => Promise<void>;
   isLoading: boolean;
   error: string | null;
 }
 
-export const useSignup = (): SignupResult => {
+export const useLogin = (): LoginResult => {
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const { dispatch } = useAuthContext();
 
-  const signup = async (email: string, password: string): Promise<void> => {
+  const login = async (email: string, password: string): Promise<void> => {
     setIsLoading(true);
     setError(null);
 
     try {
-      const response = await fetch('http://localhost:8000/api/register', {
+      const response = await fetch('http://localhost:8000/api/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password }),
@@ -41,9 +41,9 @@ export const useSignup = (): SignupResult => {
       }
     } catch (error) {
       setIsLoading(false);
-      setError('An error occurred while signing up.');
+      setError('An error occurred while logging in.');
     }
   };
 
-  return { signup, isLoading, error };
+  return { login, isLoading, error };
 };
