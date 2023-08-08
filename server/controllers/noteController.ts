@@ -8,7 +8,6 @@ interface AuthenticatedRequest extends Request {
 
 export const createNote = async (req: AuthenticatedRequest, res: Response): Promise<any> => {
     const { title, content, category } = req.body;
-    // console.log(title)
 
     let emptyFields = []
 
@@ -36,7 +35,7 @@ export const createNote = async (req: AuthenticatedRequest, res: Response): Prom
 
 export const getNotes = async (req: AuthenticatedRequest, res: Response): Promise<any> => {
     try {
-        const notes = await Note.find({ user_id: req.user })
+        const notes = await Note.find({ user_id: req.user }).sort({createdAt: -1})
         res.status(200).json(notes);
     } catch (error) {
         console.log(error)
@@ -55,6 +54,38 @@ export const getNote = async (req: AuthenticatedRequest, res: Response): Promise
 
     if(!note) {
         return res.status(404).json({ error: 'No such Note'})
+    }
+
+    res.status(200).json(note);
+}
+
+export const updateNote = async (req: AuthenticatedRequest, res: Response): Promise<any> => {
+    const { id } = req.params;
+
+    if(!mongoose.Types.ObjectId.isValid(id)) {
+        return res.status(404).json({ error: 'No such Note'});
+    }
+    const note = await Note.findOneAndUpdate({ _id: id}, {
+        ...req.body
+    })
+
+    if(!note) {
+        return res.status(400).json({ error: 'No such workout'});
+    }
+    res.status(200).json(note);
+}
+
+export const deleteNote =async (req: AuthenticatedRequest, res: Response): Promise<any> => {
+    const { id } = req.params;
+
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+        return res.status(404).json({ error: 'No such Note' });
+    }
+
+    const note = await Note.findByIdAndDelete({ _id: id })
+
+    if(!note) {
+        return res.status(400).json({ error: 'No such Note' });
     }
 
     res.status(200).json(note);
