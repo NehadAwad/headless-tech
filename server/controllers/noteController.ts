@@ -70,7 +70,7 @@ export const updateNote = async (req: AuthenticatedRequest, res: Response): Prom
     })
 
     if(!note) {
-        return res.status(400).json({ error: 'No such workout'});
+        return res.status(400).json({ error: 'No such Note'});
     }
     res.status(200).json(note);
 }
