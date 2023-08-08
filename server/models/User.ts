@@ -16,11 +16,7 @@ const userSchema: Schema<IUser> = new Schema({
   password: {
     type: String,
     required: true,
-  },
-  categories: [{
-    type: Schema.Types.ObjectId,
-    ref: 'Category',
-  }],
+  }
 });
 
 const User = mongoose.model<IUser>('User', userSchema);

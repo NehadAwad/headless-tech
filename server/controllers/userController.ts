@@ -3,7 +3,7 @@ import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import { User, IUser } from '../models/User';
 
-const secretKey = 'your_secret_key_here';
+const secretKey = 'serertKey';
 
 export const signUp = async (req: Request, res: Response): Promise<any> => {
   const { email, password } = req.body;

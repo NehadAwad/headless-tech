@@ -1,13 +1,12 @@
 import mongoose, { Document, Schema } from 'mongoose';
-import User from './User';
 import Category from './Category';
+import { User } from './User';
 
 interface INote extends Document {
   title: string;
   content: string;
-  category: Schema.Types.ObjectId;
-  photos: string[];
-  createdBy: Schema.Types.ObjectId;
+  category_name: string;
+  user_id: string;
   createdAt: Date;
 }
 
@@ -20,14 +19,11 @@ const noteSchema: Schema<INote> = new Schema({
     type: String,
     required: true,
   },
-  category: {
-    type: Schema.Types.ObjectId,
-    ref: 'Category',
+  category_name: {
+    type: String,
   },
-  photos: [{ type: String }],
-  createdBy: {
-    type: Schema.Types.ObjectId,
-    ref: 'User',
+  user_id: {
+    type: String,
     required: true,
   },
   createdAt: {
